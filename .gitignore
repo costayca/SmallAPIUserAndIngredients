@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 Pipfile
 Pipfile.lock
+
+# VS code files
+/.vscode
