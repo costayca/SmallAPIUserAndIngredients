@@ -7,10 +7,17 @@ class Movie(db.Document):
     genres = db.ListField(db.StringField(), required=True)
     added_by = db.ReferenceField('User')
 
+class Ingredient(db.Document):
+    name = db.StringField(required=True)
+    quantity = db.IntField(min_value=1, required=True)
+    ingredient_type = db.ListField(db.StringField(), required=True)
+    added_by = db.ReferenceField('User', unique_with="name")
+
 class User(db.Document):
     email = db.EmailField(required=True, unique=True)
     password = db.StringField(required=True, min_length=6)
     movies = db.ListField(db.ReferenceField('Movie', reverse_delete_rule=db.PULL))
+    ingredients = db.ListField(db.ReferenceField('Ingredient', reverse_delete_rule=db.PULL))
 
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf8')
@@ -19,3 +26,4 @@ class User(db.Document):
         return check_password_hash(self.password, password)
 
 User.register_delete_rule(Movie, 'added_by', db.CASCADE)
+User.register_delete_rule(Ingredient, 'added_by', db.CASCADE)

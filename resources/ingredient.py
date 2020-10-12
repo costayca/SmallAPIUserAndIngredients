@@ -1,14 +1,15 @@
 from flask import Response, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Movie, User
+from database.models import Ingredient, User
 from flask_restful import Resource
 from mongoengine.errors import FieldDoesNotExist, NotUniqueError, DoesNotExist, ValidationError, InvalidQueryError
-from resources.errors import SchemaValidationError, MovieAlreadyExistsError, InternalServerError, UpdatingMovieError, DeletingMovieError, MovieNotExistsError
+from resources.errors import SchemaValidationError, IngredientAlreadyExistsError, InternalServerError, UpdatingIngredientError, DeletingIngredientError, IngredientNotExistsError
 
-class MoviesApi(Resource):
+
+class IngredientsApi(Resource):
     def get(self):
-        movies = Movie.objects().to_json()
-        return Response(movies, mimetype="application/json", status=200)
+        ingredients = Ingredient.objects().to_json()
+        return Response(ingredients, mimetype="application/json", status=200)
 
     @jwt_required
     def post(self):
@@ -16,53 +17,52 @@ class MoviesApi(Resource):
             user_id = get_jwt_identity()
             body = request.get_json()
             user = User.objects.get(id = user_id)
-            movie = Movie(**body, added_by = user)
-            movie.save()
-            user.update(push__movies=movie)
+            ingredient = Ingredient(**body, added_by = user)
+            ingredient.save()
+            user.update(push__ingredients=ingredient)
             user.save()
-            id = movie.id
+            id = ingredient.id
             return {'id': str(id)}, 200
         except (FieldDoesNotExist, ValidationError):
             raise SchemaValidationError
         except NotUniqueError:
-            raise MovieAlreadyExistsError
+            raise IngredientAlreadyExistsError
         except Exception:
             raise InternalServerError
-
         
-class MovieApi(Resource):
+class IngredientApi(Resource):
     @jwt_required
     def put(self, id):
         try:
             user_id = get_jwt_identity()
-            movie = Movie.objects.get(id=id, added_by=user_id)
+            ingredient = Ingredient.objects.get(id=id, added_by=user_id)
             body = request.get_json()
-            Movie.objects.get(id=id).update(**body)
+            ingredient.update(**body)
             return '', 200
         except InvalidQueryError:
             raise SchemaValidationError
         except DoesNotExist:
-            raise UpdatingMovieError
+            raise UpdatingIngredientError
         except Exception:
-            raise InternalServerError   
+            raise InternalServerError 
     
     @jwt_required
     def delete(self, id):
         try:
             user_id = get_jwt_identity()
-            movie = Movie.objects.get(id=id, added_by=user_id)
-            movie.delete()
+            ingredient = Ingredient.objects.get(id=id, added_by=user_id)
+            ingredient.delete()
             return '', 200
         except DoesNotExist:
-            raise DeletingMovieError
+            raise DeletingIngredientError
         except Exception:
             raise InternalServerError
 
     def get(self, id):
         try:
-            movies = Movie.objects.get(id=id).to_json()
-            return Response(movies, mimetype="application/json", status=200)
+            ingredients = Ingredient.objects.get(id=id).to_json()
+            return Response(ingredients, mimetype="application/json", status=200)
         except DoesNotExist:
-            raise MovieNotExistsError
+            raise IngredientNotExistsError
         except Exception:
             raise InternalServerError
