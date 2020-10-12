@@ -7,7 +7,6 @@ from flask_restful import Api
 from resources.routes import initialize_routes
 from resources.errors import errors
 from dotenv import load_dotenv, find_dotenv
-from flask_mail import Mail
 
 app = Flask(__name__)
 
@@ -19,7 +18,6 @@ app.config.update(
 api = Api(app, errors=errors)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-mail = Mail(app)
 
 app.config['MONGODB_SETTINGS'] = {
     'host': 'mongodb://localhost/movie-bag'
