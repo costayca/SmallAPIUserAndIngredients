@@ -1,7 +1,7 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: win-64
-@EXPLICIT
+python==3.8.0
 https://repo.anaconda.com/pkgs/main/noarch/tzdata-2020f-h52ac0ba_0.conda
 https://repo.anaconda.com/pkgs/main/win-64/blas-1.0-mkl.conda
 https://repo.anaconda.com/pkgs/main/win-64/ca-certificates-2021.5.25-haa95532_1.conda
