@@ -1,3 +1,4 @@
+import gc
 from flask import jsonify, request
 from flask_restful import Resource
 from model.fastaiModel import learn
@@ -11,7 +12,7 @@ class FastaiApi(Resource):
         img = load_img_fastai(image)
 
         result = learn.predict(img)[0]
-        del data
-        del image
-        del img
+        gc.get_stats()
+        gc.collect()
+        gc.get_stats()
         return jsonify(result)

@@ -1,5 +1,6 @@
 from PIL import Image
 import io
+import gc
 import numpy as np
 
 def load_img_fastai(img_bytes):
@@ -8,4 +9,7 @@ def load_img_fastai(img_bytes):
     img.to_thumb(224,224)
     img = np.array(img)
 
+    gc.get_stats()
+    gc.collect()
+    gc.get_stats()
     return img
