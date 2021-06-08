@@ -3,9 +3,9 @@ import fastai
 fastai.device = torch.device('cpu')
 from fastai.vision.all import *
 
-import pathlib
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+# import pathlib
+# temp = pathlib.PosixPath
+# pathlib.PosixPath = pathlib.WindowsPath
 
 learn = load_learner("./model/resnet_34_8_mult_2_70_test.pkl")
 
