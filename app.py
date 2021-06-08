@@ -1,4 +1,5 @@
 import os
+import gc
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
@@ -28,3 +29,4 @@ initialize_routes(api)
 
 if __name__ == '__main__':
     app.run()
+    gc.set_debug(gc.DEBUG_LEAK)
