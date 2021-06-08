@@ -75,9 +75,9 @@ srsly==2.4.1
 thinc==8.0.3
 threadpoolctl==2.1.0
 toml==0.10.1
-torch==1.8.1+cpu
+torch==1.8.1
 torchaudio==0.8.1
-torchvision==0.9.1+cpu
+torchvision==0.9.1
 tornado==6.0.4
 tqdm==4.61.0
 traitlets==5.0.4
