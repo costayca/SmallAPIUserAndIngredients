@@ -11,4 +11,7 @@ class FastaiApi(Resource):
         img = load_img_fastai(image)
 
         result = learn.predict(img)[0]
+        del data
+        del image
+        del img
         return jsonify(result)
